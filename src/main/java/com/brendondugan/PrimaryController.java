@@ -1,7 +1,7 @@
 package com.brendondugan;
 
-import com.brendondugan.audio.SoundPlayer;
 import com.brendondugan.config.Configuration;
+import com.brendondugan.config.ConfigurationKey;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,12 +12,11 @@ import java.util.Random;
 
 public class PrimaryController {
 
-	private SoundPlayer soundPlayer;
 	@FXML
 	TextField fartCountTextBox;
 
 	public PrimaryController() {
-		this.soundPlayer = new SoundPlayer();
+
 	}
 
 	public void doFarts(ActionEvent actionEvent) {
@@ -25,8 +24,8 @@ public class PrimaryController {
 		for (int i = 0; i < numberOfFarts; i++) {
 			try {
 				String fileName = getRandomFartSound();
-				soundPlayer.playSound(fileName);
-				Thread.sleep(700);
+				String stringVal = Configuration.getValueOrDefault(ConfigurationKey.DEFAULT_SOUND_DELAY, "700");
+				App.playAudioFileWithTimeout(fileName, Integer.parseInt(stringVal));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
